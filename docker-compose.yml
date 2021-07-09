@@ -25,7 +25,7 @@ services:
   cadvisor:
     image: google/cadvisor:latest
     ports:
-      - 8080:8080
+      - 8084:8084
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw

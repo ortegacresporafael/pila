@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 services:
   prometheus:
     image: prom/prometheus:latest
@@ -9,10 +9,19 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
       - 9090:9090
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      
+      
   node-exporter:
     image: prom/node-exporter
     ports:
       - 9100:9100
+    deploy: 
+       mode: global
+       
   cadvisor:
     image: google/cadvisor:latest
     ports:
@@ -22,6 +31,8 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+     deploy: 
+       mode: global
 
   grafana:
     image: grafana/grafana
@@ -32,3 +43,7 @@ services:
       - prometheus
     ports:
       - 3000:3000
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
